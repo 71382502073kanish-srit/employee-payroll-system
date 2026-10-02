@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% set title="Admin Panel" %}{% block content %}
+<div class="grid2">
+<div class="panel"><h3>Create User Account</h3><form method="post" class="formgrid"><input type="hidden" name="csrf_token" value="{{csrf_token()}}"><input name="username" placeholder="Username" required><input name="password" type="password" placeholder="Temporary password" minlength="8" required><select name="role"><option>Employee</option><option>HR</option><option>Administrator</option></select><button class="primary">Create User</button></form></div>
+<div class="panel"><h3>System Information</h3><p><b>Application:</b> PayrollPro</p><p><b>Project:</b> Employee Payroll Naming Convention Improvement</p><p><b>Database:</b> SQLite locally / PostgreSQL on Render</p><p><b>Convention:</b> snake_case</p><p><b>Authentication:</b> Hashed passwords + secure sessions</p></div>
+</div>
+<div class="panel"><h3>Users</h3><table><tr><th>Username</th><th>Role</th><th>Status</th><th>Action</th></tr>{% for u in users %}<tr><td>{{u.username}}</td><td>{{u.role}}</td><td><span class="status">Active</span></td><td>{% if u.id != session.get('user_id') %}<form method="post" action="{{url_for('delete_user', user_id=u.id)}}" style="display:inline"><input type="hidden" name="csrf_token" value="{{csrf_token()}}"><button class="danger" type="submit">Delete</button></form>{% else %}<small>Current account</small>{% endif %}</td></tr>{% endfor %}</table></div>
+{% endblock %}
